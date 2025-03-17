@@ -3,7 +3,6 @@ import slugify from 'slugify'
 import categoryModel from '../../../DB/model/Category.model.js'
 import productModel from '../../../DB/model/Product.model.js'
 import cloudinary from '../../utils/cloudinary.js'
-// import { pagination } from '../../utils/pagination.js'
 import ApiFeatures from '../../utils/apiFeatures.js'
 
 export const addProduct = async (req, res, next) => {

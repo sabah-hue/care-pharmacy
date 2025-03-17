@@ -59,7 +59,24 @@ const productSchema = new mongoose.Schema({
     userAddToWishList: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }]
+    }],
+    category: {
+        type: String,
+        enum: ['latest', 'popular', 'sale'],
+        required: true
+    },
+    bestSeller: {
+        type: Boolean,
+        default: false
+    },
+    featured: {
+        type: Boolean,
+        default: false
+    },
+    rating: {
+        type: Number,
+        default: 0
+    }
 
 }, {
     timestamps: true

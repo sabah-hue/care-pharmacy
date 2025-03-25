@@ -36,23 +36,32 @@ const couponSchema = new mongoose.Schema({
         default: "Valid",
         enum: ['Valid', 'expired']
     },
-    usagePerUser: [
-        {
-            userId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                required: true
-            },
-            maxUsage: {
+    maxUsage: {
                 type: Number,
                 required: true
             },
-            usageCount: {
+    usageCount: {
                 type: Number,
                 default: 0
             }
-        }
-    ]
+
+    // usagePerUser: [
+    //     {
+    //         userId: {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: "User",
+    //             required: true
+    //         },
+    //         maxUsage: {
+    //             type: Number,
+    //             required: true
+    //         },
+    //         usageCount: {
+    //             type: Number,
+    //             default: 0
+    //         }
+    //     }
+    // ]
 }, {
     timestamps: true
 })

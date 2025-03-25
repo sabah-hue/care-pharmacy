@@ -7,5 +7,8 @@ export const endPoints = {
     UPDATE_USER: [systemRoles.ADMIN, systemRoles.USER],
     DELETE_USER: [systemRoles.ADMIN],
     CHANGE_PASSWORD: [ systemRoles.USER, systemRoles.ADMIN],
-    UPDATE_PROFILE: [systemRoles.ADMIN, systemRoles.USER]
+    UPDATE_PROFILE: [systemRoles.ADMIN, systemRoles.USER],
+    ADD_TO_WHISHLIST: [systemRoles.USER, systemRoles.ADMIN],
+    REMOVE_FROM_WHISHLIST: [systemRoles.USER],
+    GET_WHISHLIST: [systemRoles.USER, systemRoles.ADMIN]
 }

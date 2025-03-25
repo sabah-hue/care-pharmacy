@@ -1,28 +1,29 @@
 import moment from "moment";
 import couponModel from "../../../DB/model/Coupon.model.js";
 import userModel from "../../../DB/model/User.model.js";
+import QRCode from 'qrcode';
 
 
 // usagePerUser: { userId , maxUsage , usageCount}
 export const createCoupon = async (req, res, next) => {
-    const { code, fromDate, toDate, amount, usagePerUser } = req.body
+    const { code, fromDate, toDate, amount, maxUsage, usageCount } = req.body
     if (amount > 100) {
         return next(new Error('amount not valid (must be from 1 to 100)', { cause: 400 }))
     }
     if (await couponModel.findOne({ code: code.toLowerCase() })) {
         return next(new Error('please enter different coupon code', { cause: 400 }))
     }
-    let userIds = [];
-    for (const user of usagePerUser) {
-        if (!userIds.includes(user.userId)) {
-            userIds.push(user.userId)
-        }
-    }
+    // let userIds = [];
+    // for (const user of usagePerUser) {
+    //     if (!userIds.includes(user.userId)) {
+    //         userIds.push(user.userId)
+    //     }
+    // }
 
-    const users = await userModel.find({ _id: { $in: userIds } })
-    if (users.length !== usagePerUser.length) {
-        return next(new Error('in-valid userId', { cause: 400 }))
-    }
+    // const users = await userModel.find({ _id: { $in: userIds } })
+    // if (users.length !== usagePerUser.length) {
+    //     return next(new Error('in-valid userId', { cause: 400 }))
+    // }
     const fromDateMoment = moment(new Date(fromDate)).format('YYYY-MM-DD HH:mm')
     const toDateMoment = moment(new Date(toDate)).format('YYYY-MM-DD HH:mm')
 
@@ -31,13 +32,18 @@ export const createCoupon = async (req, res, next) => {
         return next(new Error('please enter valid end date', { cause: 400 }))
     }
 
+    if (maxUsage < usageCount) {
+        return next(new Error('maxUsage must be greater than usageCount', { cause: 400 }))
+    }
+
     const coupon = await couponModel.create({
         code: code.toLowerCase(),
         fromDate: fromDateMoment,
         toDate: toDateMoment,
         amount,
         createdBy: req.user._id,
-        usagePerUser
+        maxUsage,
+        usageCount
     })
     if (!coupon) {
         return next(new Error('please try to add coupon again', { cause: 400 }))
@@ -111,16 +117,48 @@ export const validationCoupon = (coupon, userId) => {
         expired = true
     }
     // user not assgined
-    for (const assginedUser of coupon.usagePerUser) {
-        if (assginedUser.userId.toString() == userId.toString()) {
-            matched = true
-            // user exceed maxUsage
-            if (assginedUser.maxUsage <= assginedUser.usageCount) {
-                exceed = true
-            }
-        }
-    }
+    // for (const assginedUser of coupon.usagePerUser) {
+    //     if (assginedUser.userId.toString() == userId.toString()) {
+    //         matched = true
+    //         // user exceed maxUsage
+    //         if (assginedUser.maxUsage <= assginedUser.usageCount) {
+    //             exceed = true
+    //         }
+    //     }
+    // }
+
+    if (coupon.maxUsage <= coupon.usageCount)
+       exceed = true
 
     return { expired, matched, exceed }
 
 }
+
+// delete coupon
+export const deleteCoupon = async (req, res, next) => {
+    const { couponId } = req.params
+    const coupon = await couponModel.findById(couponId)
+    if (!coupon) {
+        return next(new Error('coupon not found', { cause: 400 }))
+    }
+    await couponModel.findByIdAndDelete(couponId)
+    return res.status(200).json({ message: 'coupon deleted successfully' })
+}
+
+// get all coupons
+export const getAllCoupons = async (req, res, next) => {
+    const coupons = await couponModel.find()
+    return res.status(200).json({ message: 'coupons fetched successfully', coupons })
+}
+
+// get qr code
+export const getQRCode = async (req, res, next) => {
+    const { couponId } = req.params
+    const coupon = await couponModel.findById(couponId)
+    if (!coupon) {
+        return next(new Error('coupon not found', { cause: 400 }))
+    }
+    const qrLink = await QRCode.toDataURL(coupon.code)
+    return res.status(200).json({ message: 'qr code created successfully', qrLink })
+}
+

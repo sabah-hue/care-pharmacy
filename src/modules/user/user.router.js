@@ -8,7 +8,11 @@ import auth from "../../middleware/auth.js";
 import { endPoints } from "./user.endPoint.js";
 const router = Router({ caseSensitive: true })
 
-
+// get whishList
+router.get('/whishlist',
+    auth(endPoints.GET_WHISHLIST),
+    asyncHandler(controllers.getWhishList))
+    
 // User routes
 router.post('/logout',
     auth(endPoints.LOGOUT),
@@ -45,5 +49,21 @@ router.patch('/change-password',
     auth(endPoints.CHANGE_PASSWORD),
     validation(validators.changePasswordSchema),
     asyncHandler(controllers.changePassword))
+
+
+// add to whishList
+router.post('/whishlist/:productId',
+    auth(endPoints.ADD_TO_WHISHLIST),
+    validation(validators.addToWhishListSchema),
+    asyncHandler(controllers.addToWhishList))
+
+// remove whishList
+router.delete('/whishlist/:productId',
+    auth(endPoints.REMOVE_FROM_WHISHLIST),
+    validation(validators.addToWhishListSchema),
+    asyncHandler(controllers.removeFromWhishList))
+
+
+
 
 export default router

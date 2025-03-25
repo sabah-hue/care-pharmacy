@@ -3,8 +3,8 @@ import { generalFields } from "../../middleware/validation.js";
 
 
 export const signUpSchema = Joi.object({
-    firstName: Joi.string().max(20).min(5).required().alphanum(),
-    lastName: Joi.string().max(20).min(5).required().alphanum(),
+    firstName: Joi.string().max(15).min(4).required().alphanum(),
+    lastName: Joi.string().max(15).min(4).required().alphanum(),
     email: generalFields.email,
     password: generalFields.password,
     // cPass: generalFields.cPassword,

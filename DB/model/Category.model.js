@@ -30,8 +30,7 @@ const categorySchema = new mongoose.Schema({
         ref: "User",
     },
     customId: String,
-    isDeleted: false
-
+    isDeleted: false,
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

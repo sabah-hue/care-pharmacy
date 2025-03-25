@@ -87,7 +87,13 @@ const userSchema = new Schema({
         default: false,
     },
     forgetCode: String,
-    changePassword:Number
+    changePassword:Number,
+    whishList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product"
+        }
+    ]
 }, {
     timestamps: true
 })

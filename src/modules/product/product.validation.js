@@ -13,7 +13,13 @@ export const addProductSchema = Joi.object({
     file: Joi.object({
         mainImage: Joi.array().items(generalFields.file.required()).required(),
         subImages: Joi.array().items(generalFields.file.required()).optional(),
-    }).required()
+    }).required(),
+    category: Joi.string()
+    .valid('latest', 'popular', 'sale')
+    .required(),
+
+    bestSeller: Joi.boolean()
+    .default(false),
 
 }).required()
 

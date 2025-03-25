@@ -1,25 +1,24 @@
 
-
-
-import joi from "joi"
+import Joi from "joi"
 import { generalFields } from "../../middleware/validation.js"
-export const createCategorySchema = joi.object({
-    name: joi.string().required().max(30).min(4),
-    file: generalFields.file.required()
+
+export const createCategorySchema = Joi.object({
+    name: Joi.string().required().max(30).min(4),
+    file: generalFields.file.required(),
 }).required()
 
 
-export const updateCategorySchema = joi.object({
-    name: joi.string().required().max(30).min(4).optional(),
+export const updateCategorySchema = Joi.object({
+    name: Joi.string().required().max(30).min(4).optional(),
     file: generalFields.file.optional(),
-    categoryId: joi.string().required()
+    categoryId: Joi.string().required(),
 }).required()
 
-export const getCategorySchema = joi.object({
-    categoryId: joi.string().required()
+export const getCategorySchema = Joi.object({
+    categoryId: Joi.string().required()
 }).required()
 
 
-export const deleteCategorySchema = joi.object({
-    categoryId: joi.string().required()
+export const deleteCategorySchema = Joi.object({
+    categoryId: Joi.string().required()
 }).required()

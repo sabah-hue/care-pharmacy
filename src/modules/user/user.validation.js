@@ -21,7 +21,13 @@ export const updateUserSchema = Joi.object({
     state: Joi.string().optional(),
     country: Joi.string().optional(),
     zipCode: Joi.string().optional(),
-    file: generalFields.file.optional()
+    file: generalFields.file.optional(),
+    role: Joi.string().valid('user', 'admin').optional(),
+    isActive: Joi.boolean().optional(),
+    isDeleted: Joi.boolean().optional(),
+    isVerified: Joi.boolean().optional(),
+    isBlocked: Joi.boolean().optional(),
+    whishList: Joi.array().optional(),
 }).required();
 
 // Delete user schema
@@ -34,6 +40,11 @@ export const changePasswordSchema = Joi.object({
     oldPassword: generalFields.password,
     newPassword: generalFields.password
 
+}).required();
+
+// Add to whishList schema
+export const addToWhishListSchema = Joi.object({
+    productId: generalFields.id
 }).required();
 
 // Headers schema

@@ -10,19 +10,19 @@ export const addToCart = async (req, res, next) => {
         return next(new Error('in-valid productID', { cause: 400 }))
     }
     if (product.isDeleted) {
-        await productModel.findByIdAndUpdate(productId, {
-            $addToSet: {
-                userAddToWishList: userId
-            }
-        })
+    //     await productModel.findByIdAndUpdate(productId, {
+    //         $addToSet: {
+    //             userAddToWishList: userId
+    //         }
+    //     })
         return next(new Error('not available now', { cause: 400 }))
     }
     if (product.stock < quantity) {
-        await productModel.findByIdAndUpdate(productId, {
-            $addToSet: {
-                userAddToWishList: userId
-            }
-        })
+        // await productModel.findByIdAndUpdate(productId, {
+        //     $addToSet: {
+        //         userAddToWishList: userId
+        //     }
+        // })
         return next(new Error(`sorry, max quantity can added is ${product.stock}`, { cause: 400 }))
     }
     // userId

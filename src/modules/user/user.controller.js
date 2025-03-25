@@ -1,4 +1,5 @@
 import userModel from "../../../DB/model/User.model.js";
+import productModel from "../../../DB/model/Product.model.js";
 import pkg from 'bcryptjs';
 import cloudinary from '../../utils/cloudinary.js';
 import { nanoid } from 'nanoid';
@@ -88,18 +89,64 @@ export const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
     const user = await userModel.findById(req.user._id);
 
+    // Check if old password matches
     const match = pkg.compareSync(oldPassword, user.password);
-    if (!match) {
-        return res.status(400).json({ message: "old password not match your password" });
+    if (!match) {  // Changed from "if (match)"
+        return res.status(400).json({ message: "Old password is incorrect" });
     }
 
+    // Check if new password is same as old password
     if (oldPassword === newPassword) {
-        return res.status(400).json({ message: "old password should not match your new password" });
+        return res.status(400).json({ message: "New password must be different from old password" });
     }
 
-    user.password = newPassword;
+    // Hash the new password before saving
+    const hashedPassword = pkg.hashSync(newPassword, parseInt(process.env.SALT_ROUND) || 8);
+    user.password = hashedPassword;
     await user.save();
 
     return res.status(200).json({ message: "Password changed successfully" });
 }
 
+// =========================whishList=========================
+export const addToWhishList = async (req, res, next) => {
+    const { productId } = req.params;
+    const user = await userModel.findById(req.user._id);
+    const product = await productModel.findById(productId);
+    if (!user || !product) {
+        return res.status(404).json({ message: "User or product not found" });
+    }
+    if (user.whishList.includes(productId)) {
+        return res.status(400).json({ message: "Product already in wishlist" });
+    }
+    user.whishList.push(product);
+    await user.save();
+    res.status(200).json({ message: "Product added to wishlist" });
+}
+
+// ==============remove whishList===============
+export const removeFromWhishList = async (req, res, next) => {
+    const { productId } = req.params;
+    const user = await userModel.findById(req.user._id);
+    const product = await productModel.findById(productId);
+    if (!user || !product) {
+        return res.status(404).json({ message: "User or product not found" });
+    }
+    if (!user.whishList.includes(productId)) {
+        return res.status(400).json({ message: "Product not in wishlist" });
+    }
+    user.whishList = user.whishList.filter(item => item.toString() !== productId);
+    await user.save();
+    res.status(200).json({ message: "Product removed from wishlist" });   
+}
+
+// ==============get whishList===============
+export const getWhishList = async (req, res, next) => {
+    const whishList = await userModel.findById(req.user._id).populate('whishList');
+    console.log(whishList);
+
+    if (!whishList) {
+        return res.status(404).json({ message: "Whishlist is empty" });
+    }
+    res.status(200).json({ message: "Whishlist", whishList });
+}   

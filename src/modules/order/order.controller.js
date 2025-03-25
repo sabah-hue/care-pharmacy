@@ -22,11 +22,11 @@ export const createOrder = async (req, res, next) => {
     if (expired) {
       return next(new Error('this coupon is expired', { cause: 400 }))
     }
-    if (!matched) {
-      return next(
-        new Error('this coupon is not assgined to you', { cause: 400 }),
-      )
-    }
+    // if (!matched) {
+    //   return next(
+    //     new Error('this coupon is not assgined to you', { cause: 400 }),
+    //   )
+    // }
     if (exceed) {
       return next(
         new Error('you exceed the max usage of this coupon', { cause: 400 }),
@@ -92,11 +92,12 @@ export const createOrder = async (req, res, next) => {
   if (order) {
     // increement usageCount => 1
     if (req.body.coupon) {
-      for (const user of req.body.coupon?.usagePerUser) {
-        if (user.userId.toString() == userId.toString()) {
-          user.usageCount += 1
-        }
-      }
+      // for (const user of req.body.coupon?.usagePerUser) {
+      //   if (user.userId.toString() == userId.toString()) {
+      //     user.usageCount += 1
+      //   }
+      // }
+      req.body.coupon.usageCount += 1
       await req.body.coupon.save()
     }
     // decrement stock => quantity
@@ -176,11 +177,12 @@ export const cancelOrder = async (req, res, next) => {
   if (orderCancelled) {
     if (order.couponId) {
       const coupon = await couponModel.findById(order.couponId)
-      for (const user of coupon?.usagePerUser) {
-        if (user.userId.toString() == order.userId.toString()) {
-          user.usageCount -= 1
-        }
-      }
+      coupon.usageCount -= 1
+      // for (const user of coupon?.usagePerUser) {
+      //   if (user.userId.toString() == order.userId.toString()) {
+      //     user.usageCount -= 1
+      //   }
+      // }
       await coupon.save()
     }
     // decrement stock => quantity

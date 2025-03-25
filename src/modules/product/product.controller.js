@@ -166,6 +166,16 @@ export const deleteProduct = async (req, res, next) => {
 }
 
 
+// get product by id
+export const getProductById = async (req, res, next) => {
+  const { productId } = req.params;
+  const product = await productModel.findById(productId);
+  if (!product) {
+    return next(new Error('Product not found', { cause: 404 }));
+  }
+  res.status(200).json({ message: 'Done', product });
+}
+
 // sort,search,filter,pagination,fields
 /**
  * pagination

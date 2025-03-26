@@ -14,6 +14,6 @@ router.get("/unsupscripe/:token", asyncHandler(controllers.removeAccount))
 
 
 router.post('/login', validation(logInSchema), asyncHandler(controllers.login))
-router.get('/sendcode', asyncHandler(controllers.sendCode))
+router.post('/sendcode', asyncHandler(controllers.sendCode))
 router.put('/resetPass', validation(resetPassSchema), asyncHandler(controllers.resetPassword))
 export default router

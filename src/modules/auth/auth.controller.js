@@ -110,7 +110,6 @@ export const login = async (req, res, next) => {
 //=========================== send code =======================
 export const sendCode = async (req, res, next) => {
   const { email } = req.body
-  console.log(req.body);
   const user = await userModel.findOne({ email, isConfirmed: true })
   if (!user) {
     return next(new Error('please sign up fisrt, this email not registered before', { cause: 400 }))
@@ -137,6 +136,7 @@ export const sendCode = async (req, res, next) => {
 //========================== reset password ===============================
 export const resetPassword = async (req, res, next) => {
   const { email, forgetCode, newPassword } = req.body
+  console.log(req.body);
   const user = await userModel.findOne({ email })
   if (!user) {
     return next(new Error('please sign up fisrt', { cause: 400 }))

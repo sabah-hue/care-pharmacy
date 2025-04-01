@@ -10,6 +10,7 @@ export const logout = async (req, res) => {
 }
 // =======================
 export const getProfile = async (req, res) => {
+    console.log('User from token:', req.user);
     const user = await userModel.findById(req.user._id).select('-password -forgetCode -changePassword');
     return res.status(200).json({ message: "Success", user });
 }
@@ -48,6 +49,18 @@ export const updateUser = async (req, res, next) => {
             firstName: firstName || user.userName.firstName,
             lastName: lastName || user.userName.lastName
         }
+    }
+
+    const { street, city, state, zipCode, country } = req.body;
+    // Update address if provided
+    if (street || city || state || zipCode || country) {
+        req.body.address = {
+            street: street || user.address.street,
+            city: city || user.address.city,
+            state: state || user.address.state,
+            zipCode: zipCode || user.address.zipCode,
+            country: country || user.address.country
+            }
     }
 
     // Handle profile picture upload if provided

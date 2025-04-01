@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 
-export const tokenGeneration = ({ payload = {}, signature = process.env.TOKEN_SIGNATURE, expiresIn = '2hour' } = {}) => {
+export const tokenGeneration = ({ payload = {}, signature = process.env.TOKEN_SIGNATURE, expiresIn = '6hour' } = {}) => {
     const token = jwt.sign(payload, signature, { expiresIn });
     return token
 }

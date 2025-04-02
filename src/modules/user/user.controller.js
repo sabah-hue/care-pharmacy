@@ -113,9 +113,9 @@ export const changePassword = async (req, res) => {
         return res.status(400).json({ message: "New password must be different from old password" });
     }
 
-    // Hash the new password before saving
-    const hashedPassword = pkg.hashSync(newPassword, parseInt(process.env.SALT_ROUND) || 8);
-    user.password = hashedPassword;
+    // save new password
+    
+    user.password = newPassword;
     await user.save();
 
     return res.status(200).json({ message: "Password changed successfully" });

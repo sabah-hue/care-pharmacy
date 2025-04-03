@@ -130,7 +130,7 @@ export const addToWhishList = async (req, res, next) => {
     }
     user.whishList.push(product);
     await user.save();
-    res.status(200).json({ message: "Product added to wishlist" });
+    return res.status(200).json({ message: "Product added to wishlist" });
 }
 
 // ==============remove whishList===============
@@ -146,7 +146,7 @@ export const removeFromWhishList = async (req, res, next) => {
     }
     user.whishList = user.whishList.filter(item => item.toString() !== productId);
     await user.save();
-    res.status(200).json({ message: "Product removed from wishlist" });   
+    return res.status(200).json({ message: "Product removed from wishlist" });   
 }
 
 // ==============get whishList===============

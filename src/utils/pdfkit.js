@@ -1,6 +1,7 @@
 import fs from 'fs'
 import PDFDocument from 'pdfkit'
-function createInvoice(invoice, path) {
+
+export async function createInvoice(invoice, path) {
   let doc = new PDFDocument({ size: 'A4', margin: 50 })
 
   generateHeader(doc)
@@ -17,10 +18,10 @@ function generateHeader(doc) {
     .image('Logo.png', 50, 45, { width: 50 })
     .fillColor('#444444')
     .fontSize(20)
-    .text('pharmacy', 110, 57)
+    .text('pharmacy', 110, 45)
     .fillColor('#09c')
     .fontSize(10)
-    .text('care pharmacy', 200, 50, { align: 'right' })
+    .text('care+ pharmacy', 200, 50, { align: 'right' })
     .text('6 Dokkii street', 200, 65, { align: 'right' })
     .text('Cairo,Egypt', 200, 80, { align: 'right' })
     .moveDown()
@@ -160,4 +161,4 @@ function formatDate(date) {
   return year + '/' + month + '/' + day
 }
 
-export default createInvoice
+// export default createInvoice

@@ -4,7 +4,7 @@ import couponModel from '../../../DB/model/Coupon.model.js'
 import orderModel from '../../../DB/model/Order.model.js'
 import productModel from '../../../DB/model/Product.model.js'
 import payment from '../../utils/payment.js'
-import createInvoice from '../../utils/pdfkit.js'
+import {createInvoice} from '../../utils/pdfkit.js'
 import sendEmail from '../../utils/sendEmail.js'
 import { validationCoupon } from '../coupon/coupon.controller.js'
 
@@ -56,7 +56,7 @@ export const createOrder = async (req, res, next) => {
       isDeleted: false,
     })
     if (!findProduct) {
-      return next(new Error('invalid product', { cause: 400 }))
+      return next(new Error('invalid product or out of stock', { cause: 400 }))
     }
     if (req.body.isCart) {
       product = product.toObject()
@@ -114,6 +114,34 @@ export const createOrder = async (req, res, next) => {
       },
     )
 
+
+        // generateOrderInvoice
+    
+        const invoice = {
+          shipping: {
+            name: req.user.userName.firstName + ' ' + req.user.userName.lastName,
+            address: order.address,
+            city: 'Cairo',
+            state: 'Cairo',
+            country: 'Egypt',
+            postal_code: 94111,
+          },
+          items: order.products,
+          subtotal: order.subTotal,
+          total: order.totalPrice,
+          invoice_nr: order._id,
+          date: order.createdAt,
+        }
+    
+        await createInvoice(invoice, 'invoice.pdf')
+        await sendEmail({
+          // to: req.user.email,
+          to: 'sabah.abdelbaset@gmail.com',
+          message: 'please check you invoice pdf',
+          subject: 'Order Invoice',
+          attachments: [{ path: 'invoice.pdf' }],
+        })
+        
     // payment
 
     if (order.paymentMethod == 'card') {

@@ -176,6 +176,15 @@ export const getProductById = async (req, res, next) => {
   res.status(200).json({ message: 'Done', product });
 }
 
+// all products
+export const getAllProducts = async (req, res, next) => {
+  const products = await productModel.find();
+  if (!products) {
+    return next(new Error('No products found', { cause: 404 }));
+  }
+  return res.status(200).json({ message: 'Done', products });
+}
+
 // sort,search,filter,pagination,fields
 /**
  * pagination
@@ -184,6 +193,7 @@ export const getProductById = async (req, res, next) => {
  * search
  * filter
  */
+
 export const productList = async (req, res, next) => {
   // class
   const apiFeature = new ApiFeatures(productModel.find(), req.query)

@@ -3,7 +3,7 @@ import auth from '../../middleware/auth.js'
 import { validation } from '../../middleware/validation.js'
 import { asyncHandler } from '../../utils/errorHandling.js'
 import { fileUpload } from '../../utils/multer.js'
-import { addProduct, productList, updateProduct, deleteProduct, getProductById } from './product.controller.js'
+import { addProduct, productList, updateProduct, deleteProduct, getProductById, getAllProducts } from './product.controller.js'
 import { addProductSchema, Headers, deleteProductSchema, updateProductSchema } from './product.validation.js'
 const router = Router()
 
@@ -37,8 +37,12 @@ router.delete('/:productId',
   asyncHandler(deleteProduct)
 );
 
+router.get('/all', asyncHandler(getAllProducts));
+
 router.get('/:productId', asyncHandler(getProductById));
 
-router.get('/', asyncHandler(productList))
+router.get('/', asyncHandler(productList));
+
+
 
 export default router

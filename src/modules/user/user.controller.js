@@ -101,23 +101,19 @@ export const deleteUser = async (req, res) => {
 export const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
     const user = await userModel.findById(req.user._id);
-
     // Check if old password matches
     const match = pkg.compareSync(oldPassword, user.password);
     if (!match) {  // Changed from "if (match)"
         return res.status(400).json({ message: "Old password is incorrect" });
     }
-
     // Check if new password is same as old password
     if (oldPassword === newPassword) {
         return res.status(400).json({ message: "New password must be different from old password" });
     }
-
     // save new password
-    
     user.password = newPassword;
+    user.changePassword = Date.now()
     await user.save();
-
     return res.status(200).json({ message: "Password changed successfully" });
 }
 

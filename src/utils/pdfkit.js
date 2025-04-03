@@ -15,10 +15,10 @@ export async function createInvoice(invoice, path) {
 
 function generateHeader(doc) {
   doc
-    .image('Logo.png', 50, 45, { width: 50 })
+    // .image('Logo.png', 50, 45, { width: 50 })
     .fillColor('#444444')
     .fontSize(20)
-    .text('pharmacy', 110, 45)
+    .text('care+ pharmacy', 50, 45)
     .fillColor('#09c')
     .fontSize(10)
     .text('care+ pharmacy', 200, 50, { align: 'right' })

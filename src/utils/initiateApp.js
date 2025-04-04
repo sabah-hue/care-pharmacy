@@ -37,6 +37,7 @@ const initApp = (app, express) => {
   app.use(`/coupon`, Routers.couponRouter)
   app.use(`/cart`, Routers.cartRouter)
   app.use(`/order`, Routers.orderRouter)
+  app.use(`/blog`, Routers.blogRouter)
   // in-valid routings
   app.all('*', (req, res, next) => {
     res.json('In-valid Routing Plz check url  or  method')

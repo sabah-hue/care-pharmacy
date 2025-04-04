@@ -7,6 +7,7 @@ import orderRouter from './modules/order/order.router.js'
 import productRouter from './modules/product/product.router.js'
 import reviewsRouter from './modules/reviews/reviews.router.js'
 import userRouter from './modules/user/user.router.js'
+import blogRouter from './modules/Blog/Blog.router.js'
 
 
 export{
@@ -17,5 +18,6 @@ export{
     reviewsRouter,
     cartRouter,
     categoryRouter,
-    couponRouter
+    couponRouter,
+    blogRouter
 }

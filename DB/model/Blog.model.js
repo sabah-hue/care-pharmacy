@@ -6,12 +6,12 @@ const blogSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    content: {
+    author: {
         type: String,
         unique: true,
         required: true
     },
-    Image: {
+    image: {
         path: {
             type: String,
             required: true
@@ -21,22 +21,12 @@ const blogSchema = new mongoose.Schema({
             required: true
         },
     },
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: false
-    },
-    slug: {
+    excerpt: {
         type: String,
         required: true
     },
-    updatedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
     customId: String,
     isDeleted: false
-
 }, {
     timestamps: true
 })

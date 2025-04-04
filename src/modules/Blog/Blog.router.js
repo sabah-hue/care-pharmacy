@@ -5,7 +5,7 @@ import { fileUpload } from "../../utils/multer.js";
 import * as controllers from './Blog.controller.js'
 import * as validators from './Blog.validation.js'
 import auth from "../../middleware/auth.js";
-import { endPoints } from "./blog.endPoint.js";
+import { endPoints } from "./Blog.endPoint.js";
 
 const router = Router({ caseSensitive: true })
 

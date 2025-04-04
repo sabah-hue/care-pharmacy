@@ -30,9 +30,9 @@ const auth = (accessRoles) => {
             if (!authUser) {
                 return next(new Error("Not register account"), { cause: 400 })
             }
-            if (decoded.iat < authUser.changePassword / 1000) {
-                return next(new Error("token expired"), { cause: 400 })
-            }
+            // if (decoded.iat < authUser.changePassword / 1000) {
+            //     return next(new Error("token expired"), { cause: 400 })
+            // }
             // authorization 
             if (!accessRoles.includes(authUser.role)) {
                 return next(new Error("Un-Authorized User"), { cause: 400 })

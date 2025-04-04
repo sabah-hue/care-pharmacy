@@ -159,8 +159,8 @@ export const createOrder = async (req, res, next) => {
         metadata: {
           orderId: order._id.toString(),
         },
-        cancel_url: `${process.env.CANCEL_URL}?orderId=${order._id}`,
-        success_url: `${process.env.SUCCESS_URL}?orderId=${order._id}`,
+        cancel_url: `${process.env.CANCEL_URL}/${order._id}`,
+        success_url: `${process.env.SUCCESS_URL}/${order._id}`,
         discounts: req.body.couponId ? [{ coupon: req.body.couponId }] : [],
         line_items: order.products.map((product) => {
           return {
@@ -175,10 +175,10 @@ export const createOrder = async (req, res, next) => {
           }
         }),
       })
-      return res.status(201).json({ message: 'Done', order, session })
+      return res.status(201).json({ message: 'Done', order, url: session.url })
     }
   }
-  res.status(201).json({ message: 'Done', order })
+  return res.status(201).json({ message: 'Done', order })
 }
 
 // ===========================cancel Order=========================

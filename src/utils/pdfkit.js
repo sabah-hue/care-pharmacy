@@ -15,7 +15,7 @@ export async function createInvoice(invoice, path) {
 
 function generateHeader(doc) {
   doc
-    .image('Logo.png', 50, 45, { width: 50 })
+    .image('https://res.cloudinary.com/dps8pco1z/image/upload/v1743806515/Pharmacy/Logo_smaxb7.png', 50, 45, { width: 50 })
     .fillColor('#444444')
     .fontSize(20)
     .text('care+ pharmacy', 110, 45)

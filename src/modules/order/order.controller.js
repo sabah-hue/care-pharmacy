@@ -133,14 +133,15 @@ export const createOrder = async (req, res, next) => {
           date: order.createdAt,
         }
     
-        await createInvoice(invoice, 'invoice.pdf')
-        await sendEmail({
-          // to: req.user.email,
-          to: 'sabah.abdelbaset@gmail.com',
-          message: 'please check you invoice pdf',
-          subject: 'Order Invoice',
-          attachments: [{ path: 'invoice.pdf' }],
-        })
+        //  await createInvoice(invoice, 'invoice.pdf')
+
+        // await sendEmail({
+        //   // to: req.user.email,
+        //   to: 'sabah.abdelbaset@gmail.com',
+        //   message: 'please check you invoice pdf',
+        //   subject: 'Order Invoice',
+        //   attachments: [{ path: 'invoice.pdf' }],
+        // })
         
     // payment
 

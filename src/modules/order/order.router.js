@@ -10,6 +10,7 @@ const router = Router()
 
 router.post('/', auth(endPoints.CREAT_ORDER), validation(createOrder), asyncHandler(controllers.createOrder))
 router.patch('/:orderId', auth(endPoints.CACNCEL_ORDER), validation(cancelOrder), asyncHandler(controllers.cancelOrder))
-
+router.get('/', auth(endPoints.GET_ORDERS), asyncHandler(controllers.getAllOrders));
+router.put('/:orderId', auth(endPoints.UPDATE_ORDER), asyncHandler(controllers.updateOrderStatus))
 
 export default router

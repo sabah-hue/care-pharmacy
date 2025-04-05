@@ -1,13 +1,16 @@
 import { Router } from "express";
-const router = Router()
+const router = Router({mergeParams: true})
+import auth from "../../middleware/auth.js";
 
+import {createReview, updateReview, deleteReview, getReviewByProductId} from "./reviews.controller.js"
+import {validation} from "../../middleware/validation.js"
+import {createReviewSchema, updateReviewSchema, deleteReviewSchema} from "./reviews.validation.js"
+import {asyncHandler} from "../../utils/errorHandling.js"
 
-
-
-router.get('/', (req ,res)=>{
-    res.status(200).json({message:"reviews Module"})
-})
-
+router.post('/', auth(), validation(createReviewSchema), asyncHandler(createReview));
+router.put('/:reviewId', auth(), validation(updateReviewSchema), asyncHandler(updateReview));
+router.delete('/:reviewId', auth(), validation(deleteReviewSchema), asyncHandler(deleteReview));
+router.get('/', asyncHandler(getReviewByProductId));
 
 
 

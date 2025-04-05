@@ -23,6 +23,12 @@ router.get('/profile',
     auth(endPoints.GET_PROFILE),
     asyncHandler(controllers.getProfile))
 
+// get orders
+router.get('/myOrders',
+    auth(endPoints.GET_MY_ORDERS),
+    asyncHandler(controllers.getMyOrders)
+)
+
 router.get('/',
     auth(endPoints.GET_ALL_USERS),
     asyncHandler(controllers.getAllUsers))

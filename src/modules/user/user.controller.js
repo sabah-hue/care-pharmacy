@@ -2,6 +2,7 @@ import userModel from "../../../DB/model/User.model.js";
 import productModel from "../../../DB/model/Product.model.js";
 import pkg from 'bcryptjs';
 import cloudinary from '../../utils/cloudinary.js';
+import orderModel from "../../../DB/model/Order.model.js";
 import { nanoid } from 'nanoid';
 // =============================
 export const logout = async (req, res) => {
@@ -158,4 +159,14 @@ export const getWhishList = async (req, res, next) => {
         return res.status(404).json({ message: "Whishlist is empty" });
     }
     res.status(200).json({ message: "Whishlist", whishList });
-}   
+} 
+
+// =============================get Order ===========
+export const getMyOrders = async (req, res, next) => {
+    const orders = await orderModel.find({ userId: req.user._id }).populate('products.productId');
+    if (!orders) {
+        return res.status(404).json({ message: "No orders found" });
+    }
+    res.status(200).json({ message: "Orders", orders });
+}
+

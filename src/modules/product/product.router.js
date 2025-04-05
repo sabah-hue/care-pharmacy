@@ -3,10 +3,12 @@ import auth from '../../middleware/auth.js'
 import { validation } from '../../middleware/validation.js'
 import { asyncHandler } from '../../utils/errorHandling.js'
 import { fileUpload } from '../../utils/multer.js'
+import reviewsRouter from '../reviews/reviews.router.js'
 import { addProduct, productList, updateProduct, deleteProduct, getProductById, getAllProducts } from './product.controller.js'
 import { addProductSchema, Headers, deleteProductSchema, updateProductSchema } from './product.validation.js'
 const router = Router()
 
+router.use("/:productId/reviews", reviewsRouter)
 router.post(
   '/',
   validation(Headers, true),

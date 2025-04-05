@@ -29,3 +29,8 @@ export const cancelOrder = Joi.object({
     orderId: generalFields.id,
 
 }).required()
+
+export const updateOrderStatus = Joi.object({
+    orderId: generalFields.id,
+    status: Joi.string().valid('pending', 'deliverd', 'on way').required()
+}).required()

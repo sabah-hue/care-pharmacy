@@ -10,5 +10,6 @@ export const endPoints = {
     UPDATE_PROFILE: [systemRoles.ADMIN, systemRoles.USER],
     ADD_TO_WHISHLIST: [systemRoles.USER, systemRoles.ADMIN],
     REMOVE_FROM_WHISHLIST: [systemRoles.USER],
-    GET_WHISHLIST: [systemRoles.USER, systemRoles.ADMIN]
+    GET_WHISHLIST: [systemRoles.USER, systemRoles.ADMIN],
+    GET_MY_ORDERS: [systemRoles.USER, systemRoles.ADMIN],
 }

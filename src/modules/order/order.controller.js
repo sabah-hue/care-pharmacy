@@ -223,3 +223,35 @@ export const cancelOrder = async (req, res, next) => {
     res.status(200).json({ message: 'order cancelled succesfully' })
   }
 }
+
+// =================== get Order By Id ============
+export const getAllOrders = async (req, res, next) => {
+  const orders = await orderModel.find().populate('products.productId')
+  if (!orders) {
+    return next(new Error('no orders', { cause: 404 }))
+  }
+  res.status(200).json({ message: 'Done', orders })
+}
+
+// ================== update Order Status ============
+export const updateOrderStatus = async (req, res, next) => {
+  const { orderId } = req.params
+  const { status } = req.body
+  const order = await orderModel.findById(orderId)
+  if (!order) {
+    return next(new Error('no order', { cause: 404 }))
+  }
+  if (
+    order.orderStatus == 'delivered' ||
+    order.orderStatus == 'cancelled' ||
+    order.orderStatus == 'rejected'
+  ) {
+    return next(new Error('you can not update this order', { cause: 400 }))
+  }
+  order.orderStatus = status
+  order.upadtedBy = req.user._id
+  const orderUpdated = await order.save()
+  if (orderUpdated) {
+    return res.status(200).json({ message: 'order updated succesfully', orderUpdated });
+  }
+}

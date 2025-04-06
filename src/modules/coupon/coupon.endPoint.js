@@ -7,5 +7,5 @@ export const endPoints = {
     UPDATE_COUPON: [systemRoles.ADMIN],
     DELETE_COUPON: [systemRoles.ADMIN],
     GET_ALL_COUPONS: [systemRoles.ADMIN],
-    GET_QR_CODE: [systemRoles.ADMIN],
+    GET_QR_CODE: [systemRoles.ADMIN, systemRoles.USER],
 }

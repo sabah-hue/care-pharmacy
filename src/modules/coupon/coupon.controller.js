@@ -159,6 +159,6 @@ export const getQRCode = async (req, res, next) => {
         return next(new Error('coupon not found', { cause: 400 }))
     }
     const qrLink = await QRCode.toDataURL(coupon.code)
-    return res.status(200).json({ message: 'qr code created successfully', qrLink })
+    return res.status(200).json({ message: 'qr code created successfully', qrLink, coupon })
 }
 

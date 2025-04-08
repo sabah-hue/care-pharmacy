@@ -9,8 +9,9 @@ export const createReview = async (req, res, next) => {
         "products.productId": productId,
         orderStatus: "deliverd"
     })
+    console.log(order);
     if (!order) {
-        return next(new Error("You can't review this product", {cause: "Unauthorized"}))
+        return next(new Error("You can't review this product, you should by it first"))
     }
     const oldReview = await reviewModel.findOne({productId, createdBy: req.user._id})
     if (oldReview) {

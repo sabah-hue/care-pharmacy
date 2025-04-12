@@ -5,6 +5,8 @@ import * as controllers from './order.controller.js'
 import { endPoints } from "./order.endPoint.js";
 import { asyncHandler } from "../../utils/errorHandling.js";
 import { cancelOrder, createOrder } from "./order.validation.js";
+import express from 'express'
+
 
 const router = Router()
 
@@ -12,5 +14,11 @@ router.post('/', auth(endPoints.CREAT_ORDER), validation(createOrder), asyncHand
 router.patch('/:orderId', auth(endPoints.CACNCEL_ORDER), validation(cancelOrder), asyncHandler(controllers.cancelOrder))
 router.get('/', auth(endPoints.GET_ORDERS), asyncHandler(controllers.getAllOrders));
 router.put('/:orderId', auth(endPoints.UPDATE_ORDER), asyncHandler(controllers.updateOrderStatus))
+
+router.post(
+    '/webhook',
+    express.raw({ type: 'application/json' }),
+    asyncHandler(controllers.webHooks),
+  )
 
 export default router

@@ -28,6 +28,16 @@ const initApp = (app, express) => {
   }
   //connect to DB
   connectDB()
+
+  // convert Buffer
+  app.use((req,res,next)=>{
+    if(req.originalUrl == '/order/webhook'){
+      next();
+    } else {
+      express.json()(req,res,next);
+    }
+  })
+  
   //Setup API Routing
   app.use(`/auth`, Routers.authRouter)
   app.use(`/user`, Routers.userRouter)
@@ -38,6 +48,7 @@ const initApp = (app, express) => {
   app.use(`/cart`, Routers.cartRouter)
   app.use(`/order`, Routers.orderRouter)
   app.use(`/blog`, Routers.blogRouter)
+  app.use(`/donate`, Routers.donateRouter)
   // in-valid routings
   app.all('*', (req, res, next) => {
     res.json('In-valid Routing Plz check url  or  method')

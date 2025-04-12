@@ -4,7 +4,8 @@ import { validation } from '../../middleware/validation.js'
 import { asyncHandler } from '../../utils/errorHandling.js'
 import { fileUpload } from '../../utils/multer.js'
 import reviewsRouter from '../reviews/reviews.router.js'
-import { addProduct, productList, updateProduct, deleteProduct, getProductById, getAllProducts } from './product.controller.js'
+import {  addProduct, productList, updateProduct, deleteProduct, getProductById, getAllProducts } from './product.controller.js'
+
 import { addProductSchema, Headers, deleteProductSchema, updateProductSchema } from './product.validation.js'
 const router = Router()
 
@@ -44,7 +45,6 @@ router.get('/all', asyncHandler(getAllProducts));
 router.get('/:productId', asyncHandler(getProductById));
 
 router.get('/', asyncHandler(productList));
-
 
 
 export default router

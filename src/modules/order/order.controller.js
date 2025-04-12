@@ -255,3 +255,42 @@ export const updateOrderStatus = async (req, res, next) => {
     return res.status(200).json({ message: 'order updated succesfully', orderUpdated });
   }
 }
+
+
+/////
+
+export const webHooks = async (req, res, next) => {
+  const stripe = new Stripe(process.env.STRIPE_SERCET_KEY)
+  const sig = req.headers['stripe-signature']
+
+  let event
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.endpointSecret,
+    )
+  } catch (err) {
+    return res.status(400).send(`Webhook Error: ${err.message}`)
+  }
+  const { orderId } = event.data.object.metadata
+  // Handle the event
+  if (event.type == 'checkout.session.completed') {
+    await orderModel.findOneAndUpdate(
+      { _id: orderId },
+      {
+        orderStatus: 'confirmed',
+      },
+    )
+    return res.status(200).json({ message: 'Done' })
+  }
+  await orderModel.findOneAndUpdate(
+    { _id: orderId },
+    {
+      orderStatus: 'payment failed',
+    },
+  )
+  return res.status(400).json({ message: 'please try to pay again' })
+}
+//////////////

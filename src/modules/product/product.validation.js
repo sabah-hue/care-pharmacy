@@ -35,7 +35,13 @@ export const updateProductSchema = Joi.object({
     file: Joi.object({
         mainImage: Joi.array().items(generalFields.file.optional()).optional(),
         subImages: Joi.array().items(generalFields.file.optional()).optional(),
-    }).optional()
+    }).optional(),
+    category: Joi.string()
+    .valid('latest', 'popular', 'sale')
+    .optional(),
+
+    bestSeller: Joi.boolean()
+    .default(false),
 
 }).required()
 

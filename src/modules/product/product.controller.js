@@ -124,7 +124,7 @@ export const updateProduct = async (req, res, next) => {
       })
     }
   }
-
+  
   req.body.updatedBy = req.user._id
   const savedProduct = await productModel.findByIdAndUpdate(
     productId,

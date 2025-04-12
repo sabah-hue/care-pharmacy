@@ -41,7 +41,8 @@ router.delete('/:id',
 );
 
 // payment
-router.post('/donate-payment', 
+router.post('/donate-payment',
+    auth(endPoints.PAYMENT_DONATION),
     validation(donateByStripeSchema),
     asyncHandler(donateController.donateByStrip)
 );

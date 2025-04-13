@@ -98,6 +98,7 @@ export const donateByStrip = async (req, res, next) => {
             mode: 'payment',
             customer_email: email,
             metadata: {
+              type: 'donation',
               donateId: req.body?.donateId?.toString() || null,
             },
             cancel_url: `http://localhost:5173/donation`,

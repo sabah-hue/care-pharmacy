@@ -8,7 +8,19 @@ const initApp = (app, express) => {
   const port = process.env.PORT || 5000
   var whitelist = ['http://example1.com', 'http://127.0.0.1:5500', 'http://localhost:5173']
 
-  app.use(express.json({}))
+
+  
+    //convert Buffer Data
+// app.use(express.json({}))
+
+  app.use((req, res, next) => {
+    if (req.originalUrl == '/order/webhook') {
+      next()
+    } else {
+      express.json({})(req, res, next)
+    }
+  })
+
   if (process.env.ENV_MODE == 'DEV') {
     app.use(cors())
     app.use(morgan('dev'))
@@ -28,15 +40,6 @@ const initApp = (app, express) => {
   }
   //connect to DB
   connectDB()
-
-  // convert Buffer
-  app.use((req,res,next)=>{
-    if(req.originalUrl == '/order/webhook'){
-      next();
-    } else {
-      express.json()(req,res,next);
-    }
-  })
   
   //Setup API Routing
   app.use(`/auth`, Routers.authRouter)

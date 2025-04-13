@@ -158,6 +158,7 @@ export const createOrder = async (req, res, next) => {
         mode: 'payment',
         customer_email: req.user.email,
         metadata: {
+          type: 'order',
           orderId: order._id.toString(),
         },
         cancel_url: `${process.env.CANCEL_URL}/${order._id}`,
@@ -274,9 +275,22 @@ export const webHooks = async (req, res, next) => {
   } catch (err) {
     return res.status(400).send(`Webhook Error: ${err.message}`)
   }
-  const { orderId } = event.data.object.metadata
+  const {type} = event.data.object.metadata;
   // Handle the event
-  if (event.type == 'checkout.session.completed') {
+  if (type === 'donation') {
+    if ( event.data.object.metadata.donateId != null ) {
+      const { donateId } = event.data.object.metadata;
+      if (event.type == 'checkout.session.completed' || event.type == 'checkout.session.async_payment_succeeded') {
+  
+        await donateModel.findOneAndUpdate({ _id: donateId }, { status: 'closed' })
+        return res.status(200).json({ message: 'payment Done' })
+
+    }     return res.status(400).json({ message: 'please try to pay again, or u pay for general Donation' })
+
+    }
+  }
+  const { orderId } = event.data.object.metadata;
+  if (event.type == 'checkout.session.completed' || event.type == 'checkout.session.async_payment_succeeded') {
     await orderModel.findOneAndUpdate(
       { _id: orderId },
       {

@@ -190,8 +190,7 @@ export const cancelOrder = async (req, res, next) => {
   const order = await orderModel.findById(orderId)
   if (
     (order?.orderStatus != 'placed' && order?.paymentMethod == 'cash') ||
-    (!['confirmed', 'pending'].includes(order?.orderStatus) &&
-      order?.paymentMethod == 'card')
+    (order?.orderStatus != 'pending' && order?.paymentMethod == 'card')
   ) {
     return next(
       new Error(

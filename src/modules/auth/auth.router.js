@@ -12,6 +12,8 @@ router.post('/signUp', validation(signUpSchema), asyncHandler(controllers.signUp
 router.get('/confirmEmail/:token', asyncHandler(controllers.confirmEmail))
 router.get("/unsupscripe/:token", asyncHandler(controllers.removeAccount))
 
+router.post('/loginWithGmail',asyncHandler(controllers.googleLogin))
+
 
 router.post('/login', validation(logInSchema), asyncHandler(controllers.login))
 router.post('/sendcode', asyncHandler(controllers.sendCode))

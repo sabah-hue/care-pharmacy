@@ -8,7 +8,7 @@ export const createCouponSchema = Joi.object({
     fromDate: Joi.date().greater(Date.now()).required(),
     toDate: Joi.date().greater(Date.now()).required(),
     maxUsage: Joi.number().integer().positive().required(),
-    usageCount: Joi.number().integer().positive().required(),
+    usageCount: Joi.number().min(0).integer().optional(),
     // usagePerUser: Joi.array().items(
     //     Joi.object({
     //         userId: generalFields.id,
@@ -26,7 +26,7 @@ export const updateCouponSchema = Joi.object({
     toDate: Joi.string().optional(),
     couponId: generalFields.id.required(),
     maxUsage: Joi.number().integer().positive().optional(),
-    usageCount: Joi.number().integer().positive().optional(),
+    usageCount: Joi.number().min(0).integer().optional(),
 }).required()
 
 

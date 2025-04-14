@@ -93,7 +93,12 @@ const userSchema = new Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product"
         }
-    ]
+    ],
+    provider:{
+      type:String,
+      default:'system',
+      enum:['system','GOOGLE' ,'facebook']
+  }
 }, {
     timestamps: true
 })

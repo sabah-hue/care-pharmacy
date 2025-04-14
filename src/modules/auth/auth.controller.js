@@ -8,6 +8,8 @@ import sendEmail from '../../utils/sendEmail.js'
 import { emailTemplete } from '../../utils/emailTemplet.js'
 import { sendCodeTemplate } from '../../utils/sendCodeTemplate.js'
 import { customAlphabet } from 'nanoid'
+import { OAuth2Client } from 'google-auth-library'
+
 const nanoId = customAlphabet('123456789', 6)
 
 //======================== signUp =======================
@@ -179,4 +181,54 @@ export const changePassword = async (req, res, next) => {
   
   await user.save();
   return res.status(200).json({ message: 'Password updated successfully' });
+}
+
+
+// google login
+export const googleLogin = async (req, res, next) => {
+  const client = new OAuth2Client(process.env.CLIENT_ID)
+  const { idToken } = req.body
+  async function verify() {
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.CLIENT_ID,
+    })
+    const payload = ticket.getPayload()
+    return payload
+  }
+  const { email, email_verified, firstName, lastName, picture } = await verify()
+  if (!email_verified) {
+    return next(new Error('in-valid email', { cause: 400 }))
+  }
+  const userCheck = await userModel.findOne({ email, provider: 'GOOGLE' })
+  console.log(userCheck)
+
+  // login
+  if (userCheck) {
+    const token = tokenGeneration({
+      payload: {
+        _id: userCheck._id,
+        email,
+        isLoggedIn: true,
+      },
+    })
+    await userModel.findOneAndUpdate({ email }, { isLoggedIn: true })
+    return res.status(200).json({ message: 'Login Done', token })
+  }
+
+  // signUp
+  const newUser = new userModel({
+    userName: {firstName, lastName},
+    email,
+    password: nanoId(),
+    isConfirmed: true,
+    isLoggedIn: true,
+    provider: 'GOOGLE',
+    profilePic: picture,
+  })
+  const token = tokenGeneration({
+    payload: { _id: newUser._id, email: newUser.email, isLoggedIn: true },
+  })
+  await newUser.save()
+  return res.status(201).json({ message: 'registration success', token })
 }

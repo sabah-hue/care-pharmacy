@@ -196,7 +196,7 @@ export const googleLogin = async (req, res, next) => {
     const payload = ticket.getPayload()
     return payload
   }
-  const { email, email_verified, firstName, lastName, picture } = await verify()
+  const { email, email_verified, given_name, family_name, picture } = await verify()
   if (!email_verified) {
     return next(new Error('in-valid email', { cause: 400 }))
   }
@@ -210,6 +210,7 @@ export const googleLogin = async (req, res, next) => {
         _id: userCheck._id,
         email,
         isLoggedIn: true,
+        role,
       },
     })
     await userModel.findOneAndUpdate({ email }, { isLoggedIn: true })
@@ -218,7 +219,7 @@ export const googleLogin = async (req, res, next) => {
 
   // signUp
   const newUser = new userModel({
-    userName: {firstName, lastName},
+    userName: {firstName: given_name, lastName: family_name},
     email,
     password: nanoId(),
     isConfirmed: true,
@@ -227,7 +228,7 @@ export const googleLogin = async (req, res, next) => {
     profilePic: picture,
   })
   const token = tokenGeneration({
-    payload: { _id: newUser._id, email: newUser.email, isLoggedIn: true },
+    payload: { _id: newUser._id, email: newUser.email, isLoggedIn: true, role },
   })
   await newUser.save()
   return res.status(201).json({ message: 'registration success', token })

@@ -210,7 +210,7 @@ export const googleLogin = async (req, res, next) => {
         _id: userCheck._id,
         email,
         isLoggedIn: true,
-        role,
+        role: 'User',
       },
     })
     await userModel.findOneAndUpdate({ email }, { isLoggedIn: true })
@@ -228,7 +228,7 @@ export const googleLogin = async (req, res, next) => {
     profilePic: picture,
   })
   const token = tokenGeneration({
-    payload: { _id: newUser._id, email: newUser.email, isLoggedIn: true, role },
+    payload: { _id: newUser._id, email: newUser.email, isLoggedIn: true, role: 'User' },
   })
   await newUser.save()
   return res.status(201).json({ message: 'registration success', token })

@@ -13,9 +13,9 @@ export const updateBlogSchema = joi.object({
     author: joi.string().max(50).min(2).optional(),
     excerpt: joi.string().min(10).optional(),
     file: generalFields.file.optional(),
-    blogId: joi.string().required()
+    blogId: generalFields.id
 }).required()
 
 export const deleteBlogSchema = joi.object({
-    blogId: joi.string().required()
+    blogId: generalFields.id
 }).required()

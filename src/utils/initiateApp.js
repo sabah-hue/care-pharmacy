@@ -24,9 +24,10 @@ const initApp = (app, express) => {
   if (process.env.ENV_MODE == 'DEV') {
     // app.use(cors())
     app.use(cors({
-      origin: ['http://localhost:5173', 'https://care-pharmacy.vercel.app'],
-      credentials: true,
-    }))
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      credentials: true
+  }));
     app.use(morgan('dev'))
   } else {
     app.use(async (req, res, next) => {

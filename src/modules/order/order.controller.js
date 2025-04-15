@@ -6,8 +6,6 @@ import productModel from '../../../DB/model/Product.model.js'
 import payment from '../../utils/payment.js'
 import {createInvoice} from '../../utils/pdfkit.js'
 import sendEmail from '../../utils/sendEmail.js'
-// import {createMyInvoice} from '../../utils/createInvoice.js'
-
 import { validationCoupon } from '../coupon/coupon.controller.js'
 
 export const createOrder = async (req, res, next) => {
@@ -134,17 +132,16 @@ export const createOrder = async (req, res, next) => {
           invoice_nr: order._id,
           date: order.createdAt,
         }
-        // const pdfBuffer = await createMyInvoice(invoice);
+    
+        //  await createInvoice(invoice, 'invoice.pdf')
 
-      await createInvoice(invoice, 'invoice.pdf')
-
-        await sendEmail({
-          // to: req.user.email,
-          to: 'sabah.abdelbaset@gmail.com',
-          message: 'please check you invoice pdf',
-          subject: 'Order Invoice',
-          attachments: [{ path: 'invoice.pdf' }],
-        })
+        // await sendEmail({
+        //   // to: req.user.email,
+        //   to: 'sabah.abdelbaset@gmail.com',
+        //   message: 'please check you invoice pdf',
+        //   subject: 'Order Invoice',
+        //   attachments: [{ path: 'invoice.pdf' }],
+        // })
         
     // payment
 

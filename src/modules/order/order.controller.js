@@ -143,10 +143,7 @@ export const createOrder = async (req, res, next) => {
           to: 'sabah.abdelbaset@gmail.com',
           message: 'please check you invoice pdf',
           subject: 'Order Invoice',
-          attachments: [{
-            filename: 'invoice.pdf',
-            content: pdfBuffer
-          }],
+          attachments: [{ path: 'invoice.pdf' }],
         })
         
     // payment

@@ -5,7 +5,6 @@ import mongoose from "mongoose"
 const couponSchema = new mongoose.Schema({
     code: {
         type: String,
-        unique: true,
         required: true
     },
     createdBy: {
